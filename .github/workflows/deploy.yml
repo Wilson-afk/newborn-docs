@@ -3,10 +3,10 @@ name: Deploy MkDocs site to GitHub Pages
 on:
   push:
     branches:
-      - main  # or 'master' if that’s your default branch
+      - main  # Trigger only on changes to main
 
 permissions:
-  contents: read
+  contents: write  # Needed for pushing to gh-pages
   pages: write
   id-token: write
 
@@ -26,11 +26,13 @@ jobs:
         run: |
           pip install mkdocs mkdocs-material
 
-      - name: Build the site
+      - name: Build MkDocs site
         run: mkdocs build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages     # 🔧 Important!
           publish_dir: ./site
+
